@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo 'Pull the latest code from the main branch...'
-                git branch: 'main', url: GITHUB_REPO
+                git branch: 'master', url: GITHUB_REPO
             }
         }
 
