@@ -4,7 +4,7 @@ pipeline {
     environment {
         GITHUB_USER = 'shivajigree'    // Replace with your GitHub username
         GITHUB_REPO = 'https://github.com/shivajigree/PersonalPage.git'
-        GITHUB_TOKEN = credentials('DevOps Jenkins') // Store your GitHub PAT in Jenkins credentials
+        GITHUB_TOKEN = credentials('DevOps-Jenkins') // Store your GitHub PAT in Jenkins credentials
         DEPLOY_BRANCH = 'gh-pages'              // Branch used for GitHub Pages
     }
 
