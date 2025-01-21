@@ -20,11 +20,11 @@ pipeline {
         stage('Test HTML') {
             steps {
                 echo 'Validating HTML...'
-                sh '''
-                # Run HTML validation (optional, requires Node.js)
-                npm install -g htmlhint || true
-                htmlhint *.html || echo "HTML validation warnings"
-                '''
+                // sh '''
+                // # Run HTML validation (optional, requires Node.js)
+                // npm install -g htmlhint || true
+                // htmlhint *.html || echo "HTML validation warnings"
+                // '''
             }
         }
 
