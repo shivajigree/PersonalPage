@@ -44,21 +44,27 @@ pipeline {
                 script {
                     if (isUnix()) {
                         sh '''
-                        # Create a clean deployment directory
+                        # Remove existing deploy directory if it exists
                         rm -rf deploy
                         mkdir -p deploy
                         cp -r * deploy/
                         '''
                     } else {
                         bat '''
-                        rmdir /s /q deploy
+                        if exist deploy rmdir /s /q deploy
                         mkdir deploy
-                        xcopy * deploy\\ /s /e /q /y
+                        for /d %%D in (*) do (
+                            if /i not "%%D"=="deploy" xcopy "%%D" deploy\\%%~nxD /s /e /q /y
+                        )
+                        for %%F in (*) do (
+                            if /i not "%%F"=="deploy" copy "%%F" deploy\\%%~nxF
+                        )
                         '''
                     }
                 }
             }
         }
+
 
         stage('Deploy to GitHub Pages') {
             steps {
