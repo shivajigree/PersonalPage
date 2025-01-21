@@ -92,7 +92,7 @@ pipeline {
                                 git config user.email "%GITHUB_USER%@users.noreply.github.com"
                                 git add .
                                 git commit -m "Automated deployment to GitHub Pages"
-                                git push --force https://%GITHUB_USER%:%GITHUB_PASS%@%GITHUB_REPO.replace('https://', '')% HEAD:%DEPLOY_BRANCH%
+                                git push --force https://%GITHUB_USER%:%GITHUB_PASS%@github.com/shivajigree/PersonalPage.git HEAD:%DEPLOY_BRANCH%
                                 '''
                             }
                         }
