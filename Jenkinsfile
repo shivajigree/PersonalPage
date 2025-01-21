@@ -75,7 +75,7 @@ pipeline {
                             echo "GITHUB_REPO: ${GITHUB_REPO}"
 
                         } else {
-                           echo GITHUB_REPO: %GITHUB_REPO%
+                           echo "GITHUB_REPO: %GITHUB_REPO%"
                         }
                     }
                 }
