@@ -69,38 +69,35 @@ pipeline {
         stage('Deploy to GitHub Pages') {
             steps {
                 echo 'Deploying to GitHub Pages...'
-                withCredentials([usernamePassword(
-                    credentialsId: '2eb73cbb-e22a-4b4e-8f67-5610ca29580c', 
-                    usernameVariable: 'GITHUB_USER', 
-                    passwordVariable: 'GITHUB_PASS'
-                )]) {
+                withCredentials([usernamePassword(credentialsId: '2eb73cbb-e22a-4b4e-8f67-5610ca29580c', passwordVariable: 'GITHUB_PASS', usernameVariable: 'GITHUB_USER')]) {
                     script {
                         if (isUnix()) {
                             sh '''
-                            # Deploy files to GitHub Pages
+                            # Set up Git for deployment
                             cd deploy
                             git init
                             git config user.name "${GITHUB_USER}"
                             git config user.email "${GITHUB_USER}@users.noreply.github.com"
                             git add .
                             git commit -m "Automated deployment to GitHub Pages"
-                            git push --force https://${GITHUB_USER}:${GITHUB_PASS}@${GITHUB_REPO#https://} HEAD:${DEPLOY_BRANCH}
+                            git push --force https://${GITHUB_USER}:${GITHUB_PASS}@${GITHUB_REPO.replace('https://', '')} HEAD:${DEPLOY_BRANCH}
                             '''
                         } else {
                             bat '''
                             cd deploy
                             git init
-                            git config user.name "${GITHUB_USER}"
-                            git config user.email "${GITHUB_USER}@users.noreply.github.com"
+                            git config user.name "%GITHUB_USER%"
+                            git config user.email "%GITHUB_USER%@users.noreply.github.com"
                             git add .
                             git commit -m "Automated deployment to GitHub Pages"
-                            git push --force https://${GITHUB_USER}:${GITHUB_PASS}@${GITHUB_REPO#https://} HEAD:${DEPLOY_BRANCH}
+                            git push --force https://%GITHUB_USER%:%GITHUB_PASS%@${GITHUB_REPO.replace('https://', '')} HEAD:${DEPLOY_BRANCH}
                             '''
                         }
                     }
                 }
             }
         }
+
     }
 
     post {
