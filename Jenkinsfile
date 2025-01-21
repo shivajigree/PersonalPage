@@ -69,18 +69,20 @@ pipeline {
         stage('Deploy to GitHub Pages') {
             steps {
                 echo 'Deploying to GitHub Pages...'
-                withEnv(["GITHUB_REPO=${GITHUB_REPO}"]) {
-                    withCredentials([usernamePassword(credentialsId: '2eb73cbb-e22a-4b4e-8f67-5610ca29580c', passwordVariable: 'GITHUB_PASS', usernameVariable: 'GITHUB_USER')]) {
-                        script {
-                            if (isUnix()) {
-                                echo "GITHUB_REPO: ${GITHUB_REPO}"
-    
-                            } else {
-                                set GITHUB_REPO='https://github.com/shivajigree/PersonalPage.git'
-                                set GITHUB_USER='shivajigree'
-                                set GITHUB_PASS=%GITHUB_PASS%
-                                set DEPLOY_BRANCH='gh-pages'
+               
+                withCredentials([usernamePassword(credentialsId: '2eb73cbb-e22a-4b4e-8f67-5610ca29580c', passwordVariable: 'GITHUB_PASS', usernameVariable: 'GITHUB_USER')]) {
+                    script {
+                        if (isUnix()) {
+                            echo "GITHUB_REPO: ${GITHUB_REPO}"
 
+                        } else {
+                            withEnv(["GITHUB_PASS=${GITHUB_PASS}", "GITHUB_REPO=${GITHUB_REPO}", "GITHUB_USER=${GITHUB_USER}", "DEPLOY_BRANCH=${DEPLOY_BRANCH}"]) {
+                                bat '''
+                                    echo "GITHUB_REPO: %GITHUB_REPO%"
+                                    echo "GITHUB_USER: %GITHUB_USER%"
+                                    echo "DEPLOY_BRANCH: %DEPLOY_BRANCH%"
+    
+                               
                                echo "GITHUB_REPO: %GITHUB_REPO%"
                             }
                         }
