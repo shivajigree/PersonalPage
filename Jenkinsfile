@@ -84,6 +84,7 @@ pipeline {
     
                                
                                echo "GITHUB_REPO: %GITHUB_REPO%"
+                               '''
                             }
                         }
                     }
