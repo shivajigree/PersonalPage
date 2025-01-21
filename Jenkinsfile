@@ -20,22 +20,38 @@ pipeline {
         stage('Test HTML') {
             steps {
                 echo 'Validating HTML...'
-                // sh '''
-                // # Run HTML validation (optional, requires Node.js)
-                // npm install -g htmlhint || true
-                // htmlhint *.html || echo "HTML validation warnings"
-                // '''
+                 if (isUnix()) {
+                        sh '''
+                        # Run HTML validation (optional, requires Node.js)
+                        npm install -g htmlhint || true
+                        htmlhint *.html || echo "HTML validation warnings"
+                        '''
+                    } else {
+                        bat '''
+                        # Run HTML validation (optional, requires Node.js)
+                        npm install -g htmlhint || true
+                        htmlhint *.html || echo "HTML validation warnings"
+                        '''
+                    }
             }
         }
 
         stage('Prepare for Deployment') {
             steps {
                 echo 'Preparing files for deployment...'
-                sh '''
+             if (isUnix()) {
+                    sh '''
                 # Create a clean directory for deployment
                 mkdir -p deploy
                 cp -r * deploy/
                 '''
+                  } else {
+ bat '''
+                # Create a clean directory for deployment
+                mkdir -p deploy
+                cp -r * deploy/
+                '''
+             }
             }
         }
 
@@ -43,6 +59,7 @@ pipeline {
             steps {
                 echo 'Deploying to GitHub Pages...'
                 withCredentials([usernamePassword(credentialsId: '2eb73cbb-e22a-4b4e-8f67-5610ca29580c', passwordVariable: 'GITHUB_PASS', usernameVariable: 'GITHUB_USER')]) {
+                 if (isUnix()) {
                     sh '''
                     # Set up Git for deployment
                     cd deploy
@@ -53,6 +70,18 @@ pipeline {
                     git commit -m "Automated deployment to GitHub Pages"
                     git push --force https://${GITHUB_USER}:${GITHUB_PASS}@${GITHUB_REPO#https://} HEAD:${DEPLOY_BRANCH}
                     '''
+                      } else {
+                     bat '''
+                     # Set up Git for deployment
+                    cd deploy
+                    git init
+                    git config user.name "${GITHUB_USER}"
+                    git config user.email "${GITHUB_USER}@users.noreply.github.com"
+                    git add .
+                    git commit -m "Automated deployment to GitHub Pages"
+                    git push --force https://${GITHUB_USER}:${GITHUB_PASS}@${GITHUB_REPO#https://} HEAD:${DEPLOY_BRANCH}
+                    '''
+                 }
                 }
             }
         }
