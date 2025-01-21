@@ -76,10 +76,10 @@ pipeline {
                                 echo "GITHUB_REPO: ${GITHUB_REPO}"
     
                             } else {
-                                set GITHUB_REPO=https://github.com/shivajigree/PersonalPage.git
-                                set GITHUB_USER=shivajigree
+                                set GITHUB_REPO='https://github.com/shivajigree/PersonalPage.git'
+                                set GITHUB_USER='shivajigree'
                                 set GITHUB_PASS=%GITHUB_PASS%
-                                set DEPLOY_BRANCH=gh-pages
+                                set DEPLOY_BRANCH='gh-pages'
 
                                echo "GITHUB_REPO: %GITHUB_REPO%"
                             }
