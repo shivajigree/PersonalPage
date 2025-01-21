@@ -72,26 +72,10 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: '2eb73cbb-e22a-4b4e-8f67-5610ca29580c', passwordVariable: 'GITHUB_PASS', usernameVariable: 'GITHUB_USER')]) {
                     script {
                         if (isUnix()) {
-                            sh '''
-                            # Set up Git for deployment
-                            cd deploy
-                            git init
-                            git config user.name "${GITHUB_USER}"
-                            git config user.email "${GITHUB_USER}@users.noreply.github.com"
-                            git add .
-                            git commit -m "Automated deployment to GitHub Pages"
-                            git push --force https://${GITHUB_USER}:${GITHUB_PASS}@${GITHUB_REPO} HEAD:${DEPLOY_BRANCH}
-                            '''
+                            echo "GITHUB_REPO: ${GITHUB_REPO}"
+
                         } else {
-                            bat '''
-                            cd deploy
-                            git init
-                            git config user.name "%GITHUB_USER%"
-                            git config user.email "%GITHUB_USER%@users.noreply.github.com"
-                            git add .
-                            git commit -m "Automated deployment to GitHub Pages"
-                            git push --force https://%GITHUB_USER%:%GITHUB_PASS%@${GITHUB_REPO} HEAD:${DEPLOY_BRANCH}
-                            '''
+                           echo GITHUB_REPO: %GITHUB_REPO%
                         }
                     }
                 }
