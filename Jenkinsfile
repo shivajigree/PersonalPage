@@ -69,13 +69,15 @@ pipeline {
         stage('Deploy to GitHub Pages') {
             steps {
                 echo 'Deploying to GitHub Pages...'
-                withCredentials([usernamePassword(credentialsId: '2eb73cbb-e22a-4b4e-8f67-5610ca29580c', passwordVariable: 'GITHUB_PASS', usernameVariable: 'GITHUB_USER')]) {
-                    script {
-                        if (isUnix()) {
-                            echo "GITHUB_REPO: ${GITHUB_REPO}"
-
-                        } else {
-                           echo "GITHUB_REPO: %GITHUB_REPO%"
+                withEnv(["GITHUB_REPO=${GITHUB_REPO}"]) {
+                    withCredentials([usernamePassword(credentialsId: '2eb73cbb-e22a-4b4e-8f67-5610ca29580c', passwordVariable: 'GITHUB_PASS', usernameVariable: 'GITHUB_USER')]) {
+                        script {
+                            if (isUnix()) {
+                                echo "GITHUB_REPO: ${GITHUB_REPO}"
+    
+                            } else {
+                               echo "GITHUB_REPO: %GITHUB_REPO%"
+                            }
                         }
                     }
                 }
